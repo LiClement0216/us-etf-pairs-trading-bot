@@ -1,0 +1,124 @@
+project:
+  name: "us_etf_pairs"
+  data_file: "data/processed/us_close_prices_extended.parquet"
+  results_dir: "data/results"
+
+data:
+  start_date: "2019-01-01"
+  end_date: "2026-11-11"
+  refresh: false
+
+universe:
+  tickers:
+    - SPY
+    - QQQ
+    - XLK
+    - XLF
+    - XLV
+    - XLE
+    - XLI
+    - XLY
+    - XLC
+    - XLP
+    - XLU
+    - XLB
+    - XLRE
+    - SMH
+    - VGT
+    - IYW
+    - IWD
+    - IWF
+    - KBE
+    - KIE
+    - KRE
+    - XOP
+    - XES
+    - XME
+    - XHB
+    - ITB
+    - XBI
+    - IBB
+    - IWB
+    - IJJ
+    - EFA
+    - EEM
+    - TLT
+    - IEF
+
+pair_selection:
+  mode: "economic_groups"
+  min_correlation: 0.40
+  correlation_lookback_days: 120
+  cointegration_lookback_days: 750
+  cointegration_p_value: 0.10
+  adf_p_value: 0.10
+  min_zscore_crossings: 10
+  max_hedge_ratio_cv: 0.20
+  max_hedge_ratio_range: 0.50
+  max_pairs: 10
+  economic_pairs:
+    - ["SPY", "XLK"]
+    - ["SPY", "XLF"]
+    - ["SPY", "XLE"]
+    - ["QQQ", "XLK"]
+    - ["QQQ", "SMH"]
+    - ["XLK", "SMH"]
+    - ["XLK", "VGT"]
+    - ["XLK", "IYW"]
+    - ["VGT", "IYW"]
+    - ["XLF", "KBE"]
+    - ["XLF", "KIE"]
+    - ["KBE", "KRE"]
+    - ["XLE", "XOP"]
+    - ["XLE", "XES"]
+    - ["XHB", "ITB"]
+    - ["XBI", "IBB"]
+    - ["IWF", "IWD"]
+    - ["IWB", "IJJ"]
+    - ["EFA", "EEM"]
+    - ["TLT", "IEF"]
+
+strategy:
+  hedge_ratio_window: 252
+  zscore_window: 60
+  entry_zscore: 2.0
+  exit_zscore: 0.5
+  stop_zscore: 3.5
+  max_holding_days: 30
+  cooldown_days: 10
+  min_holding_days: 5
+  market_filter_ticker: "SPY"
+  market_filter_lookback_days: 20
+  market_filter_max_drawdown: -0.10
+
+backtest:
+  train_years: 3
+  test_months: 6
+  step_months: 6
+  min_test_days: 40
+  capital_per_pair: 1000.0
+  commission_bps: 5.0
+  slippage_bps: 5.0
+  max_active_pairs: 3
+
+portfolio:
+  allocation_mode: "equal_weight"
+  max_pair_weight: 0.30
+  min_pair_return: -1.0
+  max_pair_drawdown: -1.0
+
+execution:
+  mode: "paper"
+  broker: "futu"
+  account_type: "paper"
+  host: "127.0.0.1"
+  port: 11111
+  order_type: "limit"
+  price_buffer_bps: 5
+  max_order_notional: 500
+  max_orders_per_day: 10
+  max_active_pairs: 3
+  max_total_notional: 3000
+  cancel_stale_orders: true
+  require_market_open: true
+  submit_orders: true

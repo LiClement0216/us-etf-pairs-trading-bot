@@ -1,0 +1,12 @@
+pandas>=2.2
+numpy>=1.26
+yfinance>=0.2.40
+statsmodels>=0.14
+scipy>=1.11
+arch>=6.3
+plotly>=5.22
+streamlit>=1.36
+python-dotenv>=1.0
+pyyaml>=6.0
+pytest>=8.0
+futu-api>=9.0
